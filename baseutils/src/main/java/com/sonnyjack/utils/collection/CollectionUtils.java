@@ -41,7 +41,7 @@ public class CollectionUtils {
      * @param objects
      * @return
      */
-    public static boolean isEmpty(Object... objects) {
+    public static boolean isEmpty(Object[] objects) {
         if (null == objects || objects.length <= 0) {
             return true;
         }
