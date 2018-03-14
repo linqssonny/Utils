@@ -105,7 +105,7 @@ public class AppUtils {
     /**
      * finish all activity except activityName
      *
-     * @param activityName(class.getName)
+     * @param activityName (class.getName)
      */
     public void finishAllActivityExcept(String activityName) {
         if (null == mActivityStack || mActivityStack.size() <= 0) {

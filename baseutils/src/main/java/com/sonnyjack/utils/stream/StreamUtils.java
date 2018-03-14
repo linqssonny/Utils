@@ -97,7 +97,6 @@ public class StreamUtils {
      *
      * @param inputStream
      * @return
-     * @throws Exception
      */
     public static byte[] stream2Bytes(InputStream inputStream) {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();

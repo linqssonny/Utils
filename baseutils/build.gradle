@@ -31,6 +31,6 @@ publish {
     groupId = 'com.sonnyjack.utils'//jcenter上的路径
     artifactId = 'Utils'//项目名称
     publishVersion = '0.1.0'//版本号
-    desc = '这是个可拖动的悬浮按钮'//描述，不重要
+    desc = '这是个Android基础工具库'//描述，不重要
     website = 'https://github.com/linqssonny/Utils'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
 }

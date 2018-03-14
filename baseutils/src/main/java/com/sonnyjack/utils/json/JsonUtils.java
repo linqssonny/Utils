@@ -116,28 +116,6 @@ public class JsonUtils {
     }
 
     /**
-     * json string convert to map
-     *
-     * @param value
-     * @param result
-     * @return
-     */
-    public static void jsonStr2Map(String value, Map<String, Object> result) {
-        if (null == result) {
-            throw new NullPointerException("the map is null");
-        }
-        JSONObject jsonObject = toJSONObject(value);
-        if (null != jsonObject && null != result && result.size() > 0) {
-            for (String key : result.keySet()) {
-                if (TextUtils.isEmpty(key)) {
-                    continue;
-                }
-                result.put(key, jsonObject.opt(key));
-            }
-        }
-    }
-
-    /**
      * string convert JSONObject
      *
      * @param value

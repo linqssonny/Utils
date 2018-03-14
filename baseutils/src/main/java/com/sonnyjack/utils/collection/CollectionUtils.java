@@ -11,8 +11,7 @@ public class CollectionUtils {
 
     /**
      * return true when collection is empty,otherwise false
-     *
-     * @param collection, contain list、set
+     * @param collection  contain list、set
      * @return
      */
     public static boolean isEmpty(Collection collection) {
