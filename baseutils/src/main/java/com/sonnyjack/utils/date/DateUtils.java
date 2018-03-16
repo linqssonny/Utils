@@ -2,8 +2,8 @@ package com.sonnyjack.utils.date;
 
 import android.text.TextUtils;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,69 +14,14 @@ import java.util.Date;
 
 public class DateUtils {
 
+    private DateUtils() {
+
+    }
+
     public static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
     public static final String DEFAULT_MILLISECOND_FORMAT = "yyyyMMddHHmmssSSS";
-
-    /**
-     * format date（current time）
-     *
-     * @param format
-     * @return
-     */
-    public static String format(String format) {
-        Date date = new Date();
-        return format(date, format);
-    }
-
-    /**
-     * format date
-     *
-     * @param timeStamp
-     * @param format
-     * @return
-     */
-    public static String format(long timeStamp, String format) {
-        Date date = new Date(timeStamp);
-        return format(date, format);
-    }
-
-    /**
-     * format date
-     *
-     * @param timeStr
-     * @param format
-     * @return
-     */
-    public static String format(String timeStr, String format) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-        Date date = null;
-        try {
-            date = simpleDateFormat.parse(timeStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return format(date, format);
-    }
-
-    /**
-     * format date
-     *
-     * @param date
-     * @param format
-     * @return
-     */
-    public static String format(Date date, String format) {
-        if (null == date) {
-            return null;
-        }
-        if (TextUtils.isEmpty(format)) {
-            format = DEFAULT_FORMAT;
-        }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-        return simpleDateFormat.format(date);
-    }
 
     /**
      * is same day
@@ -96,6 +41,34 @@ public class DateUtils {
         if (calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR)
                 && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)
                 && calendar1.get(Calendar.DATE) == calendar2.get(Calendar.DATE)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isToady(String dateString) {
+        Date date = dateString2Date(dateString);
+        return isToady(date);
+    }
+
+    public static boolean isToady(Date date) {
+        if (null == date) {
+            return false;
+        }
+        Date today = new Date();
+        return isSameDay(date, today);
+    }
+
+    /**
+     * Return true when the year is leap year.
+     *
+     * @param year
+     */
+    public static boolean isLeapYear(int year) {
+        if (year % 400 == 0) {
+            return true;
+        }
+        if (year % 4 == 0 && year % 100 != 0) {
             return true;
         }
         return false;
@@ -123,5 +96,199 @@ public class DateUtils {
                 .append(":")
                 .append(nf.format(seconds));
         return stringBuffer.toString();
+    }
+
+    /**
+     * return format(default: "yyyy-MM-dd HH:mm:ss") string by appoint milliSeconds
+     *
+     * @param milliSeconds
+     * @param format
+     * @return
+     */
+    public static String buildDateString(long milliSeconds, String format) {
+        Date date = milliSeconds2Date(milliSeconds);
+        return buildDateString(date, format);
+    }
+
+    /**
+     * format date
+     *
+     * @param dateString
+     * @param format
+     * @return
+     */
+    public static String buildDateString(String dateString, String format) {
+        Date date = dateString2Date(dateString);
+        return buildDateString(date, format);
+    }
+
+    /**
+     * format date
+     *
+     * @param date
+     * @param format
+     * @return
+     */
+    public static String buildDateString(Date date, String format) {
+        if (null == date) {
+            return null;
+        }
+        if (TextUtils.isEmpty(format)) {
+            format = DEFAULT_FORMAT;
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        return simpleDateFormat.format(date);
+    }
+
+    /**
+     * return format(default: "yyyy-MM-dd HH:mm:ss") string by current date
+     *
+     * @param format
+     * @return
+     */
+    public static String buildCurrentDateString(String format) {
+        return buildDateString(System.currentTimeMillis(), format);
+    }
+
+    /**
+     * return Milliseconds by date
+     *
+     * @param date
+     * @return
+     */
+    public static long date2Milliseconds(Date date) {
+        if (null == date) {
+            return 0;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.getTimeInMillis();
+    }
+
+    /**
+     * return date by milliSeconds
+     *
+     * @param milliSeconds
+     * @return
+     */
+    public static Date milliSeconds2Date(long milliSeconds) {
+        Date date = new Date(milliSeconds);
+        return date;
+    }
+
+    /**
+     * milliSeconds to string by format
+     *
+     * @param milliSeconds
+     * @param format
+     * @return
+     */
+    public static String milliSeconds2DateString(long milliSeconds, String format) {
+        Date date = milliSeconds2Date(milliSeconds);
+        return buildDateString(date, format);
+    }
+
+    /**
+     * return date by string
+     *
+     * @param dateString
+     * @return
+     */
+    public static Date dateString2Date(String dateString) {
+        Date date = null;
+        try {
+            DateFormat dateFormat = DateFormat.getDateInstance();
+            date = dateFormat.parse(dateString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    /**
+     * return year by date string, it may be return -1 when error
+     *
+     * @param dateString
+     * @return
+     */
+    public static int getYearByDateString(String dateString) {
+        return getFieldByDateString(dateString, Calendar.YEAR);
+    }
+
+    /**
+     * return month by date string, it may be return -1 when error
+     *
+     * @param dateString
+     * @return
+     */
+    public static int getMonthByDateString(String dateString) {
+        return getFieldByDateString(dateString, Calendar.MONTH);
+    }
+
+    /**
+     * return month by date string, it may be return -1 when error
+     *
+     * @param dateString
+     * @return
+     */
+    public static int getDayByDateString(String dateString) {
+        return getFieldByDateString(dateString, Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * return hour by date string, it may be return -1 when error
+     *
+     * @param dateString
+     * @return
+     */
+    public static int getHourByDateString(String dateString) {
+        return getFieldByDateString(dateString, Calendar.HOUR_OF_DAY);//24hours
+    }
+
+    /**
+     * return minute by date string, it may be return -1 when error
+     *
+     * @param dateString
+     * @return
+     */
+    public static int getMinuteByDateString(String dateString) {
+        return getFieldByDateString(dateString, Calendar.MINUTE);
+    }
+
+    /**
+     * return second by date string, it may be return -1 when error
+     *
+     * @param dateString
+     * @return
+     */
+    public static int getSecondByDateString(String dateString) {
+        return getFieldByDateString(dateString, Calendar.SECOND);
+    }
+
+    /**
+     * return Millisecond by date string, it may be return -1 when error
+     *
+     * @param dateString
+     * @return
+     */
+    public static int getMillisecondByDateString(String dateString) {
+        return getFieldByDateString(dateString, Calendar.MILLISECOND);
+    }
+
+    /**
+     * return appoint value(year、month、day and so on) by timeMillis string
+     *
+     * @param dateString
+     * @param field
+     * @return
+     */
+    public static int getFieldByDateString(String dateString, int field) {
+        Date date = dateString2Date(dateString);
+        if (null == date) {
+            return -1;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(field);
     }
 }

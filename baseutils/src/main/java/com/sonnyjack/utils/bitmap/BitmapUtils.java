@@ -17,6 +17,10 @@ import java.io.FileOutputStream;
  */
 public class BitmapUtils {
 
+    private BitmapUtils() {
+
+    }
+
     /**
      * calculate bitmap sample size
      *

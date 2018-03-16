@@ -9,9 +9,14 @@ import java.util.Map;
 
 public class CollectionUtils {
 
+    private CollectionUtils() {
+
+    }
+
     /**
      * return true when collection is empty,otherwise false
-     * @param collection  contain list、set
+     *
+     * @param collection contain list、set
      * @return
      */
     public static boolean isEmpty(Collection collection) {
@@ -40,7 +45,7 @@ public class CollectionUtils {
      * @param objects
      * @return
      */
-    public static boolean isEmpty(Object[] objects) {
+    public static <T> boolean isEmpty(T[] objects) {
         if (null == objects || objects.length <= 0) {
             return true;
         }

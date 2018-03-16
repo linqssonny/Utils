@@ -5,9 +5,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 /**
- * Created by SonnyJack on 2016/8/3.
+ * Created by SonnyJack on 2018/3/13.
  */
 public class VersionUtils {
+
+    private VersionUtils() {
+
+    }
 
     /**
      * return version code

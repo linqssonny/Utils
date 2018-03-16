@@ -16,6 +16,10 @@ import android.provider.MediaStore;
 
 public class SystemUtils {
 
+    private SystemUtils() {
+
+    }
+
     /**
      * return absolute path by uri
      * compatible android 4.4 version or lasted

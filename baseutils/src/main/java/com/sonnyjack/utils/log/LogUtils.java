@@ -16,6 +16,10 @@ import java.util.Locale;
  */
 public class LogUtils {
 
+    private LogUtils() {
+
+    }
+
     public static final int V = 0x1;
     public static final int D = 0x2;
     public static final int I = 0x3;
@@ -25,17 +29,17 @@ public class LogUtils {
 
     public static final String NULL_TIPS = "log message is null or empty";
 
-    public static int sDepth = 6;
+    private static int sDepth = 6;
 
     public static String sFilePath;
 
     public static void init(String filePath) {
-        init(filePath, sDepth);
+        init(filePath, 0);
     }
 
-    public static void init(String filePath, int depth) {
+    public static void init(String filePath, int addDepth) {
         sFilePath = filePath;
-        sDepth += depth;
+        sDepth += addDepth;
     }
 
     public static void v(Object objMsg) {

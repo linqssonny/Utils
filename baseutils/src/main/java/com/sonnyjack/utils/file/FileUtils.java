@@ -16,6 +16,11 @@ import java.nio.channels.FileChannel;
  */
 
 public class FileUtils {
+
+    private FileUtils() {
+
+    }
+
     /***
      * copy file
      *

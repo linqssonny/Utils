@@ -15,6 +15,10 @@ import java.util.Map;
 
 public class JsonUtils {
 
+    private JsonUtils() {
+
+    }
+
     /**
      * build String by keys and values
      *

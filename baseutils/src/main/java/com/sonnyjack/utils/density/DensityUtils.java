@@ -7,6 +7,10 @@ import android.content.Context;
  */
 public class DensityUtils {
 
+    private DensityUtils() {
+
+    }
+
     /***
      * px convert dp
      *

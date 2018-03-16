@@ -12,6 +12,10 @@ import java.nio.channels.FileChannel;
 
 public class StreamUtils {
 
+    private StreamUtils() {
+
+    }
+
     /**
      * close inputStream
      *

@@ -1,158 +1,87 @@
 package com.sonnyjack.utils.app;
 
-import android.app.Activity;
-import android.os.Build;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.text.TextUtils;
 
-import java.util.ArrayList;
-import java.util.Stack;
+import java.util.List;
 
 /**
- * Created by SonnyJack on 2018/3/13.
+ * Created by SonnyJack on 2018/3/15.
  */
 
 public class AppUtils {
 
-    private Stack<Activity> mActivityStack = new Stack<>();
-
     private AppUtils() {
-    }
 
-    private static final class AppUtilsHolder {
-        private static AppUtils instance = new AppUtils();
-    }
-
-    public static AppUtils getInstance() {
-        return AppUtilsHolder.instance;
-    }
-
-    /***
-     * add activity to stack
-     *
-     * @param activity
-     */
-    public void addActivity(Activity activity) {
-        if (null == activity) {
-            return;
-        }
-        //the version >= 17
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed()) {
-            return;
-        }
-        if (activity.isFinishing()) {
-            return;
-        }
-        mActivityStack.add(activity);
-    }
-
-    /***
-     * remove activity
-     * note: the method only remove activity that distance from the top of the stack
-     * @param activity
-     */
-    public void removeActivity(Activity activity) {
-        if (null == mActivityStack || mActivityStack.size() <= 0) {
-            return;
-        }
-        if (null == activity) {
-            return;
-        }
-        for (int i = mActivityStack.size() - 1; i >= 0; i--) {
-            Activity eachActivity = mActivityStack.get(i);
-            if (null == eachActivity) {
-                continue;
-            }
-            if (eachActivity.getClass().equals(activity.getClass())) {
-                mActivityStack.remove(eachActivity);
-                break;
-            }
-        }
-    }
-
-    /***
-     * remove all activity
-     * @param activity
-     */
-    public void removeAllActivity(Activity activity) {
-        if (null == mActivityStack || mActivityStack.size() <= 0) {
-            return;
-        }
-        if (null == activity) {
-            return;
-        }
-        for (int i = mActivityStack.size() - 1; i >= 0; i--) {
-            Activity eachActivity = mActivityStack.get(i);
-            if (null == eachActivity) {
-                continue;
-            }
-            if (eachActivity.getClass().equals(activity.getClass())) {
-                mActivityStack.remove(eachActivity);
-            }
-        }
     }
 
     /**
-     * finish all activity
-     */
-    public synchronized void finishAllActivity() {
-        for (Activity eachActivity : mActivityStack) {
-            if (eachActivity != null) {
-                eachActivity.finish();
-            }
-        }
-        mActivityStack.clear();
-    }
-
-    /**
-     * finish all activity except activityName
+     * return true if the app have exits,otherwise false
      *
-     * @param activityName (class.getName)
-     */
-    public void finishAllActivityExcept(String activityName) {
-        if (null == mActivityStack || mActivityStack.size() <= 0) {
-            return;
-        }
-        ArrayList<Activity> finishList = new ArrayList<>();
-        for (Activity eachActivity : mActivityStack) {
-            if (null == eachActivity) {
-                continue;
-            }
-            if (!eachActivity.getClass().getName().equals(activityName)) {
-                eachActivity.finish();
-                finishList.add(eachActivity);
-            }
-        }
-        mActivityStack.removeAll(finishList);
-        finishList.clear();
-    }
-
-    /**
-     * return true while stack have activityName, otherwise false.
-     *
-     * @param activityName
+     * @param context
+     * @param packageName the app package name
      * @return
      */
-    public boolean hasActivity(String activityName) {
-        for (Activity eachActivity : mActivityStack) {
-            if (null == eachActivity) {
-                continue;
-            }
-            if (eachActivity.getClass().getName().equals(activityName)) {
-                return true;
+    public static boolean isInstalledApp(Context context, String packageName) {
+        if (null == context) {
+            throw new NullPointerException("the context is null");
+        }
+        if (TextUtils.isEmpty(packageName)) {
+            return false;
+        }
+        PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> packageInfoList = packageManager.getInstalledPackages(0);
+        if (null != packageInfoList && packageInfoList.size() > 0) {
+            for (int i = 0; i < packageInfoList.size(); i++) {
+                String name = packageInfoList.get(i).packageName;
+                if (TextUtils.equals(name, packageName)) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
     /**
-     * return current activity (the activity in stack top)
+     * return true if the app is running foreground, otherwise false
      *
+     * @param context
      * @return
      */
-    public Activity getCurrentActivity() {
-        if (mActivityStack.size() == 0) {
-            return null;
-        } else {
-            return mActivityStack.get(mActivityStack.size() - 1);
+    public static boolean isAppForeground(Context context) {
+        return isAppForeground(context, context.getPackageName());
+    }
+
+    /**
+     * return true if the app is running foreground, otherwise false
+     *
+     * @param context
+     * @param packageName The name of the package.
+     * @return
+     */
+    public static boolean isAppForeground(Context context, String packageName) {
+        if (null == context) {
+            throw new NullPointerException("the context is null");
         }
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (null == activityManager) {
+            return false;
+        }
+        List<ActivityManager.RunningAppProcessInfo> runningAppProcessInfoList = activityManager.getRunningAppProcesses();
+        if (null == runningAppProcessInfoList || runningAppProcessInfoList.size() == 0) {
+            return false;
+        }
+        for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : runningAppProcessInfoList) {
+            if (null == runningAppProcessInfo) {
+                continue;
+            }
+            if (runningAppProcessInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return TextUtils.equals(runningAppProcessInfo.processName, packageName);
+            }
+        }
+        return false;
     }
 }

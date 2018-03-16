@@ -10,11 +10,15 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * Created by SonnyJack on 2016/7/12.
+ * Created by SonnyJack on 2018/3/13.
  */
 public class AESUtils {
 
-    public static String sKey = "SonnyJack_123_!@#$%^&*()";
+    private AESUtils() {
+
+    }
+
+    public final static String sKey = "SonnyJack_123_!@#$%^&*()";
 
     private final static String HEX = "0123456789ABCDEF";
 

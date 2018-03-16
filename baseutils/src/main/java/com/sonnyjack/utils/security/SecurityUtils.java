@@ -10,9 +10,14 @@ import java.security.MessageDigest;
 
 public class SecurityUtils {
 
+    private SecurityUtils() {
+
+    }
+
     /**
      * MD5 Encryption
      * note: it may be crack when use md5 or sha-1 encryption, so suggest use sha-256 or sha-512 encryption
+     *
      * @param value
      * @return
      */
@@ -44,10 +49,10 @@ public class SecurityUtils {
      * Encryption
      *
      * @param value
-     * @param encryptionType
+     * @param encryptionType the type of encryption
      * @return
      */
-    private static String encryption(String value, String encryptionType) {
+    public static String encryption(String value, String encryptionType) {
         // 返回值
         String result = null;
         if (TextUtils.isEmpty(value)) {
