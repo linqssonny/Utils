@@ -106,6 +106,10 @@ public class FileUtils {
         int len;
         FileOutputStream fos = null;
         try {
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
             fos = new FileOutputStream(file);
             while ((len = inputStream.read(buf)) != -1) {
                 fos.write(buf, 0, len);
@@ -113,7 +117,7 @@ public class FileUtils {
             fos.flush();
             success = true;
         } catch (Exception e) {
-
+            e.printStackTrace();
         } finally {
             try {
                 fos.close();

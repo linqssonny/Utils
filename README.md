@@ -1,6 +1,6 @@
 #使用方式
-    compile 'com.sonnyjack.utils:Utils:0.1.1'  或者
-    implementation 'com.sonnyjack.utils:Utils:0.1.1'
+    compile 'com.sonnyjack.utils:Utils:0.1.2'  或者
+    implementation 'com.sonnyjack.utils:Utils:0.1.2'
 
 如果你的项目混淆：
 
@@ -61,7 +61,7 @@ com.sonnyjack.utils.screen：
 	ScreenUtils：获取屏幕宽高、状态栏高度。
 com.sonnyjack.utils.security：
 
-	AESUtils：提供aes加解密方法，可自行转递key。
+	AESUtils：提供aes加解密方法，可自行传递key。
 	SecurityUtils：内有MD5、SHA256、SHA512加密方法。
 com.sonnyjack.utils.sp：
 
