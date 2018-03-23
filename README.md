@@ -13,8 +13,15 @@
     AppUtils原有方法移至ActivityUtils
     com.sonnyjack.utils.net改为com.sonnyjack.utils.network
     NetUtils原有方法移至NetworkUtils
+另外，二维码扫描、6.0以后权限管理，我独立出来了，使用方便：
 
-下面简单介绍一下该工具库里的api。
+     api 'com.sonnyjack.library:qrcode:0.1.1'
+     api 'com.sonnyjack.permission:PermissionUtils:0.1.0'
+[二维码扫描](https://github.com/linqssonny/QrCode)
+
+[6.0权限授权](https://github.com/linqssonny/PermissionUtils)
+
+**下面简单介绍一下该工具库里的api。**
 
 com.sonnyjack.utils.app：
 
@@ -81,6 +88,5 @@ com.sonnyjack.utils.toast：
 com.sonnyjack.utils.version：
 
 	VersionUtils：提供获取版本号(VersionCode)、版本名字(VersionName)。
-
 
 如果遇到什么问题可以加我Q：252624617  或者issues反馈
